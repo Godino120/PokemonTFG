@@ -1,7 +1,39 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PokemonService } from '../../services/pokemon.service';
-import { forkJoin, Observable } from 'rxjs';
+import { Observable, catchError, map, of } from 'rxjs';
+
+interface Pokemon {
+  id: number;
+  name: string;
+  sprites: {
+    other: {
+      'official-artwork': {
+        front_default: string;
+      };
+    };
+  };
+  types: Array<{
+    type: {
+      name: string;
+    };
+  }>;
+  height: number;
+  weight: number;
+}
+
+interface PokemonResult {
+  name: string;
+  url: string;
+}
+
+interface PokemonResponse {
+  results: PokemonResult[];
+}
+
+interface PokemonTypeResponse {
+  pokemon: PokemonResult[];
+}
 
 @Component({
   selector: 'app-pokedex',
@@ -11,9 +43,9 @@ import { forkJoin, Observable } from 'rxjs';
   styleUrls: ['./pokedex.component.css']
 })
 export class PokedexComponent implements OnInit {
-  pokemons: any[] = [];
-  selectedType: string = '';
-  pokemonTypes: string[] = [
+  pokemons: Pokemon[] = [];
+  tipoSeleccionado: string = '';
+  tiposPokemon: string[] = [
     'normal', 'fire', 'water', 'grass', 'electric', 'ice', 'fighting', 'poison',
     'ground', 'flying', 'psychic', 'bug', 'rock', 'ghost', 'dragon', 'steel', 'fairy'
   ];
@@ -21,61 +53,54 @@ export class PokedexComponent implements OnInit {
   constructor(private pokemonService: PokemonService) {}
 
   ngOnInit(): void {
-    this.loadPokemons();
+    this.cargarPokemons();
   }
 
-  // Cargar los primeros 151 Pokémon con sus detalles
-  loadPokemons(): void {
-    this.pokemonService.getPokemons().subscribe(
-      (data: any) => {
-        const pokemonRequests: Observable<any>[] = data.results.map((pokemon: any) =>
-          this.pokemonService.getPokemonDetails(this.getId(pokemon.url).toString())
-        );
-        forkJoin(pokemonRequests).subscribe(
-          (details: any[]) => {
-            this.pokemons = details; // Asigna los detalles cargados
-          },
-          (error) => {
-            console.error('Error al cargar detalles de Pokémon:', error);
-          }
-        );
-      },
-      (error) => {
-        console.error('Error al cargar Pokémon:', error);
-      }
-    );
-  }
+  async cargarPokemons(): Promise<void> {
+    try {
+      const respuesta = await this.pokemonService.getPokemons().toPromise() as PokemonResponse;
+      if (!respuesta?.results) return;
 
-  // Filtrar Pokémon por tipo usando la nueva función
-  filterByType(type: string): void {
-    this.selectedType = type;
-    if (type === 'all') {
-      this.loadPokemons(); // Cargar todos los Pokémon
-    } else {
-      this.pokemonService.getPokemonByTypeLimited(type).subscribe(
-        (data: any) => {
-          const pokemonRequests: Observable<any>[] = data.pokemon.map((pokemon: any) =>
-            this.pokemonService.getPokemonDetails(this.getId(pokemon.url).toString())
-          );
-          forkJoin(pokemonRequests).subscribe(
-            (details: any[]) => {
-              this.pokemons = details; // Asigna los detalles cargados
-            },
-            (error) => {
-              console.error(`Error al filtrar Pokémon por tipo ${type}:`, error);
-            }
-          );
-        },
-        (error) => {
-          console.error(`Error al obtener Pokémon de tipo ${type}:`, error);
-        }
+      const detallesPromesas = respuesta.results.map((pokemon: PokemonResult) => 
+        this.pokemonService.getPokemonDetails(this.obtenerId(pokemon.url).toString()).toPromise()
       );
+
+      const detalles = await Promise.all(detallesPromesas);
+      this.pokemons = detalles.filter((pokemon): pokemon is Pokemon => pokemon !== null);
+    } catch (error) {
+      console.error('Error al cargar Pokémon:', error);
     }
   }
 
-  // Obtener el ID de un Pokémon desde su URL
-  getId(url: string): number {
-    const parts = url.split('/');
-    return Number(parts[parts.length - 2]);
+  async filtrarPorTipo(tipo: string): Promise<void> {
+    this.tipoSeleccionado = tipo;
+    
+    try {
+      if (tipo === 'all') {
+        await this.cargarPokemons();
+        return;
+      }
+
+      const respuesta = await this.pokemonService.getPokemonByTypeLimited(tipo).toPromise() as PokemonTypeResponse;
+
+      if (!respuesta?.pokemon) {
+        console.error('No se encontraron Pokémon para el tipo:', tipo);
+        return;
+      }
+
+      const detallesPromesas = respuesta.pokemon.map((pokemon: PokemonResult) => 
+        this.pokemonService.getPokemonDetails(this.obtenerId(pokemon.url).toString()).toPromise()
+      );
+
+      const detalles = await Promise.all(detallesPromesas);
+      this.pokemons = detalles.filter((pokemon): pokemon is Pokemon => pokemon !== null);
+    } catch (error) {
+      console.error(`Error al filtrar Pokémon por tipo ${tipo}:`, error);
+    }
+  }
+
+  private obtenerId(url: string): number {
+    const partes = url.split('/');
+    return Number(partes[partes.length - 2]);
   }
 }
