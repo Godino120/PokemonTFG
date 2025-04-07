@@ -30,6 +30,16 @@ export class PokemonService {
     );
   }
 
+  // Obtener detalles de la especie de un Pokémon
+  getPokemonSpecies(url: string): Observable<any> {
+    return this.http.get<any>(url).pipe(
+      catchError(err => {
+        console.error('Error al obtener detalles de la especie:', err);
+        return throwError(() => new Error('Error al obtener detalles de la especie'));
+      })
+    );
+  }
+
   // Filtrar Pokémon por tipo (original)
   getPokemonByType(type: string): Observable<any> {
     return this.http.get<any>(`https://pokeapi.co/api/v2/type/${type}`).pipe(
@@ -61,7 +71,7 @@ export class PokemonService {
 
   // Función auxiliar para extraer el ID de la URL de un Pokémon
   private getIdFromUrl(url: string): number {
-    const parts = url.split('/');
-    return Number(parts[parts.length - 2]);
+    const partes = url.split('/');
+    return Number(partes[partes.length - 2]);
   }
 }

@@ -1,0 +1,55 @@
+<div class="modal" [class.mostrar]="mostrar" *ngIf="pokemon">
+  <div class="modal-contenido">
+    <span class="cerrar" (click)="cerrar()">&times;</span>
+    
+    <div class="pokemon-detalle">
+      <div class="imagen-container">
+        <img [src]="pokemon.sprites.other['official-artwork'].front_default" [alt]="pokemon.name">
+      </div>
+
+      <div class="info-container">
+        <h2 class="nombre">{{ pokemon.name | titlecase }}</h2>
+        <p class="descripcion">{{ descripcion }}</p>
+
+        <div class="stats-grid">
+          <div class="stat-item">
+            <h3>Altura</h3>
+            <p>{{ pokemon.height / 10 }} m</p>
+          </div>
+          
+          <div class="stat-item">
+            <h3>Categoría</h3>
+            <p>{{ categoria }}</p>
+          </div>
+
+          <div class="stat-item">
+            <h3>Peso</h3>
+            <p>{{ pokemon.weight / 10 }} kg</p>
+          </div>
+
+          <div class="stat-item">
+            <h3>Habilidad</h3>
+            <p>{{ obtenerHabilidades() | titlecase }}</p>
+          </div>
+        </div>
+
+        <div class="tipos-container">
+          <h3>Tipo</h3>
+          <div class="tipos">
+            <span *ngFor="let tipo of pokemon.types" class="tipo {{ tipo.type.name }}">
+              {{ tipo.type.name | titlecase }}
+            </span>
+          </div>
+        </div>
+
+        <div class="genero-container" *ngIf="mostrarGenero()">
+          <h3>Sexo</h3>
+          <div class="generos">
+            <span class="genero macho" *ngIf="tieneMacho()">♂</span>
+            <span class="genero hembra" *ngIf="tieneHembra()">♀</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
