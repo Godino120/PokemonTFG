@@ -1,0 +1,42 @@
+<header>
+    <nav class="nav">
+      <img src="assets/img/logo.png" alt="Logo Pokémon">
+      <ul class="nav-list">
+        <li class="nav-item">
+          <button class="btn btn-header" (click)="filterByType('all')">Ver todos</button>
+        </li>
+        <li class="nav-item" *ngFor="let type of pokemonTypes">
+          <button class="btn btn-header {{ type }}" (click)="filterByType(type)">
+            {{ type | titlecase }}
+          </button>
+        </li>
+      </ul>
+    </nav>
+  </header>
+  
+  <main>
+    <div class="todos">
+      <div class="pokemon-todos">
+        <div *ngFor="let pokemon of pokemons" class="pokemon">
+          <p class="pokemon-id-back">#{{ pokemon.id }}</p>
+          <div class="pokemon-imagen">
+            <img [src]="pokemon.sprites.other['official-artwork'].front_default" alt="{{ pokemon.name }}">
+          </div>
+          <div class="pokemon-info">
+            <div class="nombre-contenedor">
+              <p class="pokemon-id">#{{ pokemon.id }}</p>
+              <h2 class="pokemon-nombre">{{ pokemon.name | titlecase }}</h2>
+            </div>
+            <div class="pokemon-tipos">
+              <!-- Acceder directamente a los tipos -->
+              <p *ngFor="let type of pokemon.types" class="tipo {{ type.type.name }}">{{ type.type.name | titlecase }}</p>
+            </div>
+            <div class="pokemon-stats">
+              <p class="stat">{{ pokemon.height / 10 }}m</p>
+              <p class="stat">{{ pokemon.weight / 10 }}kg</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>

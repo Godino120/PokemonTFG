@@ -1,0 +1,10 @@
+<h2>Batalla Pokémon</h2>
+<input type="text" #poke1 placeholder="Pokemon 1">
+<button (click)="selectPokemon1(poke1.value)">Seleccionar</button>
+
+<input type="text" #poke2 placeholder="Pokemon 2">
+<button (click)="selectPokemon2(poke2.value)">Seleccionar</button>
+
+<button (click)="battle()">¡Batalla!</button>
+
+<h3 *ngIf="winner">¡Ganador: {{ winner | titlecase }}!</h3>
