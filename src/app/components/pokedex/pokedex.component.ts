@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PokemonService } from '../../services/pokemon.service';
-import { Observable, catchError, map, of } from 'rxjs';
 import { PokemonDetailComponent } from '../pokemon-detail/pokemon-detail.component';
 
 interface Pokemon {
