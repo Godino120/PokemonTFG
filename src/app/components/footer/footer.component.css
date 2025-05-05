@@ -1,0 +1,90 @@
+/* Estilos específicos para el footer */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+* {
+    font-family: "Poppins", sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    color: #1c1c1c;
+}
+
+ul {
+    list-style-type: none;
+}
+
+/* Footer */
+.footer {
+    background-color: #1c1c1c;
+    padding: 64px 32px 32px;
+}
+
+.footer-content {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 32px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+@media (min-width: 768px) {
+    .footer-content {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+.footer-logo-img {
+    width: 150px;
+}
+
+.footer h3 {
+    color: white;
+    font-size: 18px;
+    margin-bottom: 16px;
+    position: relative;
+}
+
+.footer h3::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 0;
+    width: 40px;
+    height: 3px;
+    background-color: #f85888;
+}
+
+.footer-links ul {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.footer-links a {
+    color: #ececec;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.footer-links a:hover {
+    color: #f85888;
+}
+
+.footer-info p {
+    color: #ececec;
+    margin-bottom: 12px;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.footer-copyright {
+    text-align: center;
+    padding-top: 32px;
+    margin-top: 32px;
+    border-top: 1px solid #333;
+}
+
+.footer-copyright p {
+    color: #999;
+    font-size: 14px;
+}

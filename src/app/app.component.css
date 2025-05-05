@@ -1,0 +1,29 @@
+/* Reset específico para eliminar todos los márgenes de la página */
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    overflow-x: hidden; /* Previene scroll horizontal */
+}
+
+/* Resetear box-sizing para todos los elementos */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* Asegurarse de que las secciones ocupan el ancho completo */
+section, header, footer, main, div {
+    width: 100%;
+    max-width: 100%;
+}
+
+/* Eliminar márgenes laterales en contenedores principales */
+.container, .container-fluid, .row {
+    margin-left: 0;
+    margin-right: 0;
+    padding-left: 0;
+    padding-right: 0;
+    width: 100%;
+}

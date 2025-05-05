@@ -2,11 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { forkJoin } from 'rxjs'; // Importación directa de forkJoin
 import { PokemonService } from '../../services/pokemon.service';
+import { CommonModule } from '@angular/common'; // Importar CommonModule
 
 @Component({
   selector: 'app-landing-page',
   templateUrl: './landing-page.component.html',
-  styleUrls: ['./landing-page.component.css']
+  styleUrls: ['./landing-page.component.css'],
+  imports: [CommonModule]
 })
 export class LandingPageComponent implements OnInit {
   // Tipado mejorado para los Pokémon destacados

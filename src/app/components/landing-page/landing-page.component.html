@@ -1,151 +1,96 @@
-<header class="header-landing">
-    <nav class="nav">
-      <img src="/assets/img/logo.png" alt="Logo Pokémon">
-      <ul class="nav-list">
-        <li class="nav-item">
-          <button class="btn btn-header" (click)="navegarAPokedex()">Pokédex</button>
-        </li>
-        <li class="nav-item">
-          <button class="btn btn-header" (click)="navegarACrearEquipo()">Crear Equipo</button>
-        </li>
-        <li class="nav-item">
-          <button class="btn btn-header" (click)="navegarAMisEquipos()">Mis Equipos</button>
-        </li>
-      </ul>
-    </nav>
-  </header>
-  
-  <main>
-    <section class="hero">
-      <div class="hero-content">
-        <h1 class="hero-title">Tu aventura Pokémon comienza aquí</h1>
-        <p class="hero-subtitle">Explora el mundo Pokémon, crea tus equipos y conviértete en el mejor entrenador</p>
-        <div class="hero-buttons">
-          <button class="btn-primary" (click)="navegarAPokedex()">Ver Pokédex</button>
-          <button class="btn-secondary" (click)="navegarACrearEquipo()">Crear Equipo</button>
-        </div>
-      </div>
-      <div class="hero-image">
-        <img src="/assets/img/trainer.png" alt="Entrenador Pokémon">
-      </div>
-    </section>
-  
-    <!-- Features Section -->
-    <section class="features">
-      <h2 class="section-title">¿Qué puedes hacer?</h2>
-      
-      <div class="features-grid">
-        <div class="feature-card">
-          <div class="feature-icon">
-            <img src="/assets/img/icons/pokedex.png" alt="Pokédex">
-          </div>
-          <h3>Explorar la Pokédex</h3>
-          <p>Información detallada de todos los Pokémon, sus tipos, habilidades y estadísticas.</p>
-        </div>
-        
-        <div class="feature-card">
-          <div class="feature-icon">
-            <img src="/assets/img/icons/team.png" alt="Equipo">
-          </div>
-          <h3>Crear Equipos</h3>
-          <p>Forma equipos balanceados con tus Pokémon favoritos y compártelos.</p>
-        </div>
-        
-        <div class="feature-card">
-          <div class="feature-icon">
-            <img src="/assets/img/icons/search.png" alt="Búsqueda">
-          </div>
-          <h3>Buscar Pokémon</h3>
-          <p>Encuentra rápidamente cualquier Pokémon por nombre, tipo o número en la Pokédex.</p>
-        </div>
-      </div>
-    </section>
-  
-    <!-- Popular Pokemon Section -->
-    <section class="pokemon-destacados">
-      <h2 class="section-title">Pokémon Destacados</h2>
-      
-      <div class="spinner" *ngIf="isLoading"></div>
-      
-      <div class="pokemon-carousel" *ngIf="!isLoading">
-        <div *ngFor="let pokemon of pokemonDestacados" class="pokemon" (click)="navegarAPokedex()">
-          <p class="pokemon-id-back">#{{ pokemon.id }}</p>
-          <div class="pokemon-imagen">
-            <img [src]="pokemon.sprites.other['official-artwork'].front_default" [alt]="pokemon.name">
-          </div>
-          <div class="pokemon-info">
-            <div class="nombre-contenedor">
-              <p class="pokemon-id">#{{ pokemon.id }}</p>
-              <h2 class="pokemon-nombre">{{ pokemon.name }}</h2>
-            </div>
-            <div class="pokemon-tipos">
-              <p *ngFor="let tipo of pokemon.types" class="tipo {{ tipo.type.name }}">
-                {{ tipo.type.name }}
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  
-    <!-- Call to Action -->
-    <section class="cta">
-      <div class="cta-content">
-        <h2>¡Comienza Tu Aventura Pokémon Ahora!</h2>
-        <p>Explora, crea equipos y conviértete en un maestro Pokémon.</p>
-        <button class="btn-cta" (click)="navegarAPokedex()">Explorar Pokédex</button>
-      </div>
-    </section>
-
-    <!-- New Landing Page Section -->
-    <section class="landing-page">
-
-      <!-- Indicador de carga -->
-      <div *ngIf="isLoading" class="loading">
-        <p>Cargando Pokémon destacados...</p>
-      </div>
-
-      <!-- Mensaje de error -->
-      <div *ngIf="errorMessage" class="error">
-        <p>{{ errorMessage }}</p>
-      </div>
-
-      <!-- Lista de Pokémon destacados -->
-      <div *ngIf="!isLoading && !errorMessage" class="pokemon-destacados">
-        <h2>Pokémon Destacados</h2>
-        <div class="pokemon-list">
-          <div *ngFor="let pokemon of pokemonDestacados" class="pokemon-card">
-            <h3>{{ pokemon.name ? (pokemon.name) : 'Desconocido' }}</h3>
-            <img [src]="pokemon.sprites?.front_default" [alt]="pokemon.name || 'Pokémon'" />
-          </div>
-        </div>
-      </div>
-
-      <br>
-      
-    </section>
-  </main>
-  
-  <footer class="footer">
-    <div class="footer-content">
-      <div class="footer-logo">
-        <img src="/assets/img/logo.png" alt="Logo Pokémon" class="footer-logo-img">
-      </div>
-      <div class="footer-links">
-        <h3>Enlaces</h3>
-        <ul>
-          <li><a href="javascript:void(0)" (click)="navegarAPokedex()">Pokédex</a></li>
-          <li><a href="javascript:void(0)" (click)="navegarACrearEquipo()">Crear Equipo</a></li>
-          <li><a href="javascript:void(0)" (click)="navegarAMisEquipos()">Mis Equipos</a></li>
-        </ul>
-      </div>
-      <div class="footer-info">
-        <h3>Acerca de</h3>
-        <p>Este proyecto es un Trabajo de Fin de Grado de desarrollo web con Angular.</p>
-        <p>Pokémon y todos los nombres relacionados son marcas registradas por The Pokémon Company.</p>
+<main>
+  <section class="hero">
+    <div class="hero-content">
+      <h1 class="hero-title">Tu aventura Pokémon comienza aquí</h1>
+      <p class="hero-subtitle">Explora el mundo Pokémon, crea tus equipos y conviértete en el mejor entrenador</p>
+      <div class="hero-buttons">
+        <button class="btn-primary" (click)="navegarAPokedex()">Ver Pokédex</button>
+        <button class="btn-secondary" (click)="navegarACrearEquipo()">Crear Equipo</button>
       </div>
     </div>
-    <div class="footer-copyright">
-      <p>Ya vere que pongo aqui</p>
+    <div class="hero-image">
+      <img src="/assets/img/trainer.png" alt="Entrenador Pokémon">
     </div>
-  </footer>
+  </section>
+
+  <!-- Features Section -->
+  <section class="features">
+    <h2 class="section-title">¿Qué puedes hacer?</h2>
+    
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">
+          <img src="/assets/img/icons/pokedex.png" alt="Pokédex">
+        </div>
+        <h3>Explorar la Pokédex</h3>
+        <p>Información detallada de todos los Pokémon, sus tipos, habilidades y estadísticas.</p>
+      </div>
+      
+      <div class="feature-card">
+        <div class="feature-icon">
+          <img src="/assets/img/icons/team.png" alt="Equipo">
+        </div>
+        <h3>Crear Equipos</h3>
+        <p>Forma equipos balanceados con tus Pokémon favoritos y compártelos.</p>
+      </div>
+      
+      <div class="feature-card">
+        <div class="feature-icon">
+          <img src="/assets/img/icons/search.png" alt="Búsqueda">
+        </div>
+        <h3>Buscar Pokémon</h3>
+        <p>Encuentra rápidamente cualquier Pokémon por nombre, tipo o número en la Pokédex.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Popular Pokemon Section -->
+  <section class="pokemon-destacados">
+    <h2 class="section-title">Pokémon Destacados</h2>
+    
+    <!-- Indicador de carga -->
+    <div class="spinner" *ngIf="isLoading"></div>
+    
+    <!-- Mensaje de error -->
+    <div class="error-message" *ngIf="errorMessage && !isLoading">
+      <p>{{ errorMessage }}</p>
+    </div>
+    
+    <!-- Pokémon destacados -->
+    <div class="pokemon-carousel" *ngIf="!isLoading && !errorMessage && pokemonDestacados.length > 0">
+      <div *ngFor="let pokemon of pokemonDestacados" class="pokemon" (click)="navegarAPokedex()">
+        <p class="pokemon-id-back">#{{ pokemon.id }}</p>
+        <div class="pokemon-imagen">
+          <img [src]="pokemon.sprites?.other?.['official-artwork']?.front_default || pokemon.sprites?.front_default" [alt]="pokemon.name">
+        </div>
+        <div class="pokemon-info">
+          <div class="nombre-contenedor">
+            <p class="pokemon-id">#{{ pokemon.id }}</p>
+            <h2 class="pokemon-nombre">{{ pokemon.name }}</h2>
+          </div>
+          <div class="pokemon-tipos">
+            <p *ngFor="let tipo of pokemon.types" class="tipo {{ tipo.type.name }}">
+              {{ tipo.type.name }}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Sin resultados -->
+    <div *ngIf="!isLoading && !errorMessage && pokemonDestacados.length === 0" class="no-pokemon">
+      <p>No se encontraron Pokémon destacados</p>
+    </div>
+  </section>
+
+  <!-- Call to Action -->
+  <section class="cta">
+    <div class="cta-content">
+      <h2>¡Comienza Tu Aventura Pokémon Ahora!</h2>
+      <p>Explora, crea equipos y conviértete en un maestro Pokémon.</p>
+      <button class="btn-cta" (click)="navegarAPokedex()">Explorar Pokédex</button>
+    </div>
+  </section>
+</main>
+
+<br>
