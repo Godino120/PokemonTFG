@@ -12,5 +12,14 @@
         <button class="btn btn-header" (click)="navegarAMisEquipos()">Mis Equipos</button>
       </li>
     </ul>
+
+    <div class="nav-user">
+      <button class="user-icon" (click)="toggleSesionModal()">
+        <img src="/assets/img/icons/user.png" alt="Usuario" />
+      </button>
+    </div>
+
   </nav>
+
+  <app-sesion *ngIf="isSesionModalVisible"></app-sesion>
 </header>

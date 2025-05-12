@@ -1,3 +1,4 @@
+/* Modal general */
 .modal {
   display: none;
   position: fixed;
@@ -7,12 +8,14 @@
   height: 100%;
   background-color: rgba(0, 0, 0, 0.7);
   z-index: 1000;
+  overflow-y: auto; /* Permitir scroll si el contenido es demasiado grande */
 }
 
 .modal.mostrar {
   display: flex;
   justify-content: center;
   align-items: center;
+  padding: 1rem; /* Espaciado para evitar que el contenido toque los bordes */
 }
 
 .modal-contenido {
@@ -23,6 +26,7 @@
   width: 90%;
   position: relative;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin: auto; /* Centrar el contenido verticalmente */
 }
 
 .cerrar {
@@ -32,15 +36,24 @@
   font-size: 24px;
   cursor: pointer;
   color: #666;
+  z-index: 10; /* Asegurar que el botón de cierre esté siempre visible */
 }
 
+.cerrar:hover {
+  color: #333;
+}
+
+/* Contenedor principal del detalle del Pokémon */
 .pokemon-detalle {
   display: flex;
   gap: 2rem;
+  flex-wrap: wrap; /* Permitir que los elementos se ajusten en pantallas pequeñas */
 }
 
 .imagen-container {
   flex: 0 0 40%;
+  max-width: 300px; /* Limitar el tamaño máximo de la imagen */
+  margin: auto; /* Centrar en pantallas pequeñas */
 }
 
 .imagen-container img {
@@ -51,18 +64,21 @@
 
 .info-container {
   flex: 1;
+  min-width: 250px; /* Asegurar que el contenido no sea demasiado pequeño */
 }
 
 .nombre {
   font-size: 2rem;
   margin-bottom: 1rem;
   color: #333;
+  text-align: center; /* Centrar el nombre en pantallas pequeñas */
 }
 
 .descripcion {
   color: #666;
   margin-bottom: 1.5rem;
   line-height: 1.5;
+  text-align: justify;
 }
 
 .stats-grid {
@@ -98,6 +114,7 @@
   display: flex;
   gap: 0.5rem;
   margin-top: 0.5rem;
+  flex-wrap: wrap; /* Permitir que los tipos se ajusten en pantallas pequeñas */
 }
 
 .tipo {
@@ -146,21 +163,47 @@
 .steel { background-color: #B8B8D0; }
 .fairy { background-color: #EE99AC; }
 
+/* Media queries para pantallas pequeñas */
 @media (max-width: 768px) {
-  .pokemon-detalle {
-    flex-direction: column;
-  }
-
-  .imagen-container {
-    flex: 0 0 auto;
-  }
-
   .modal-contenido {
     width: 95%;
     padding: 1rem;
   }
 
+  .pokemon-detalle {
+    flex-direction: column;
+    align-items: center; /* Centrar el contenido en pantallas pequeñas */
+  }
+
+  .imagen-container {
+    flex: 0 0 auto;
+    max-width: 80%; /* Reducir el tamaño de la imagen en pantallas pequeñas */
+  }
+
   .stats-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr; /* Mostrar las estadísticas en una sola columna */
+  }
+
+  .nombre {
+    font-size: 1.5rem; /* Reducir el tamaño del texto en pantallas pequeñas */
+  }
+}
+
+@media (max-width: 480px) {
+  .modal-contenido {
+    padding: 0.5rem;
+  }
+
+  .nombre {
+    font-size: 1.2rem;
+  }
+
+  .stat-item {
+    padding: 0.8rem;
+  }
+
+  .tipo {
+    font-size: 0.8rem;
+    padding: 0.4rem 0.8rem;
   }
 }
