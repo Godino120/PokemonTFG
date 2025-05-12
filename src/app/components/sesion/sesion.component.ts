@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
@@ -5,7 +6,7 @@ import { FormsModule } from '@angular/forms';
   selector: 'app-sesion',
   templateUrl: './sesion.component.html',
   styleUrls: ['./sesion.component.css'],
-  imports: [FormsModule]
+  imports: [FormsModule, CommonModule]
 })
 export class SesionComponent {
   isLoginMode: boolean = true; // Modo por defecto: iniciar sesión
