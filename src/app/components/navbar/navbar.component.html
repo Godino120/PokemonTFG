@@ -14,12 +14,10 @@
     </ul>
 
     <div class="nav-user">
-      <button class="user-icon" (click)="toggleSesionModal()">
-        <img src="/assets/img/icons/user.png" alt="Usuario" />
+      <button class="user-icon">
+        <img src="/assets/img/icons/user.png" alt="Usuario" (click)="navegarASesion()"/>
       </button>
     </div>
 
   </nav>
-
-  <app-sesion *ngIf="isSesionModalVisible"></app-sesion>
 </header>
