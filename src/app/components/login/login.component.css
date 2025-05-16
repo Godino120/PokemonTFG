@@ -1,0 +1,102 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+.login {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f6f8fb;
+  font-family: 'Poppins', Arial, sans-serif;
+}
+
+.form {
+  background: #fff;
+  padding: 40px 32px 32px 32px;
+  border-radius: 18px;
+  box-shadow: 0 8px 32px rgba(50, 115, 220, 0.10);
+  max-width: 380px;
+  width: 100%;
+  text-align: center;
+  border: 1.5px solid #e3eafc;
+}
+
+.form h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 24px;
+  color: #3273dc;
+  letter-spacing: 0.5px;
+}
+
+label {
+  display: block;
+  text-align: left;
+  margin-bottom: 7px;
+  font-weight: 500;
+  color: #222;
+  font-size: 1rem;
+}
+
+input[type="email"],
+input[type="password"] {
+  width: 97%;
+  padding: 11px;
+  border-radius: 8px;
+  border: 1.5px solid #dbeafe;
+  font-size: 1rem;
+  background: #f7f9fc;
+  transition: border-color 0.2s;
+  font-family: inherit;
+  margin-bottom: 16px;
+}
+
+input[type="email"]:focus,
+input[type="password"]:focus {
+  border-color: #3273dc;
+  outline: none;
+  background: #eef4fd;
+}
+
+button.submit, button.registrar {
+  width: 100%;
+  padding: 12px;
+  border-radius: 100vmax;
+  border: none;
+  font-weight: 600;
+  font-size: 1.05rem;
+  background: #3273dc;
+  color: #fff;
+  margin-top: 10px;
+  margin-bottom: 8px;
+  transition: background 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 8px rgba(50, 115, 220, 0.10);
+  font-family: inherit;
+  cursor: pointer;
+}
+
+button.submit:hover, button.registrar:hover {
+  background: #285bb5;
+  box-shadow: 0 4px 16px rgba(50, 115, 220, 0.13);
+}
+
+button.registrar {
+  background: #f7f9fc;
+  color: #3273dc;
+  border: 1.5px solid #3273dc;
+  margin-top: 0;
+}
+
+button.registrar:hover {
+  background: #eaf2fd;
+  color: #285bb5;
+}
+
+.error {
+  color: #f85888;
+  background: #ffe6ee;
+  border-radius: 8px;
+  padding: 10px;
+  margin-top: 12px;
+  font-weight: 500;
+  font-size: 1rem;
+}

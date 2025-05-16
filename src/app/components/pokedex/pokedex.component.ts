@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PokemonService } from '../../services/pokemon.service';
 import { PokemonDetailComponent } from '../pokemon-detail/pokemon-detail.component';
+import { firstValueFrom } from 'rxjs'; // <-- IMPORTANTE
 
 interface Pokemon {
   id: number;
@@ -68,9 +69,6 @@ interface PokemonSpecies {
   styleUrls: ['./pokedex.component.css']
 })
 export class PokedexComponent implements OnInit {
-  // ViewChild nos permite acceder al componente hijo (PokemonDetailComponent)
-  // Es como tener una referencia directa al componente del modal de detalle
-  // Lo usamos para poder llamar a sus métodos (como toggleMostrar) de forma segura
   @ViewChild(PokemonDetailComponent) detailComponent?: PokemonDetailComponent;
 
   pokemons: Pokemon[] = [];
@@ -91,11 +89,11 @@ export class PokedexComponent implements OnInit {
 
   async cargarPokemons(): Promise<void> {
     try {
-      const respuesta = await this.pokemonService.getPokemons().toPromise() as PokemonResponse;
+      const respuesta = await firstValueFrom(this.pokemonService.getPokemons()) as PokemonResponse;
       if (!respuesta?.results) return;
 
-      const detallesPromesas = respuesta.results.map((pokemon: PokemonResult) => 
-        this.pokemonService.getPokemonDetails(this.obtenerId(pokemon.url).toString()).toPromise()
+      const detallesPromesas = respuesta.results.map((pokemon: PokemonResult) =>
+        firstValueFrom(this.pokemonService.getPokemonDetails(this.obtenerId(pokemon.url).toString()))
       );
 
       const detalles = await Promise.all(detallesPromesas);
@@ -107,22 +105,22 @@ export class PokedexComponent implements OnInit {
 
   async filtrarPorTipo(tipo: string): Promise<void> {
     this.tipoSeleccionado = tipo;
-    
+
     try {
       if (tipo === 'all') {
         await this.cargarPokemons();
         return;
       }
 
-      const respuesta = await this.pokemonService.getPokemonByTypeLimited(tipo).toPromise() as PokemonTypeResponse;
+      const respuesta = await firstValueFrom(this.pokemonService.getPokemonByTypeLimited(tipo)) as PokemonTypeResponse;
 
       if (!respuesta?.pokemon) {
         console.error('No se encontraron Pokémon para el tipo:', tipo);
         return;
       }
 
-      const detallesPromesas = respuesta.pokemon.map((pokemon: PokemonResult) => 
-        this.pokemonService.getPokemonDetails(this.obtenerId(pokemon.url).toString()).toPromise()
+      const detallesPromesas = respuesta.pokemon.map((pokemon: PokemonResult) =>
+        firstValueFrom(this.pokemonService.getPokemonDetails(this.obtenerId(pokemon.url).toString()))
       );
 
       const detalles = await Promise.all(detallesPromesas);
@@ -141,13 +139,13 @@ export class PokedexComponent implements OnInit {
     try {
       this.pokemonSeleccionado = pokemon;
       const speciesUrl = pokemon.species.url;
-      const species = await this.pokemonService.getPokemonSpecies(speciesUrl).toPromise() as PokemonSpecies;
-      
+      const species = await firstValueFrom(this.pokemonService.getPokemonSpecies(speciesUrl)) as PokemonSpecies;
+
       // Obtener descripción en español
       const descripcionEs = species.flavor_text_entries.find(
         entry => entry.language.name === 'es'
       )?.flavor_text || '';
-      
+
       // Obtener categoría en español
       const categoriaEs = species.genera.find(
         genus => genus.language.name === 'es'
@@ -155,15 +153,13 @@ export class PokedexComponent implements OnInit {
 
       this.descripcionPokemon = descripcionEs.replace(/\f/g, ' ');
       this.categoriaPokemon = categoriaEs;
-      
+
       // Actualizar el gender_rate del Pokémon seleccionado
       this.pokemonSeleccionado = {
         ...pokemon,
         gender_rate: species.gender_rate
       };
 
-      // Usando ViewChild podemos acceder de forma segura al componente hijo
-      // y llamar a su método toggleMostrar para abrir el modal
       if (this.detailComponent) {
         this.detailComponent.toggleMostrar();
       }

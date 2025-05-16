@@ -31,6 +31,6 @@ export class NavbarComponent {
   }
 
   navegarASesion(): void {
-    this.router.navigate(['/sesion']);
+    this.router.navigate(['/login']);
   }
 }
