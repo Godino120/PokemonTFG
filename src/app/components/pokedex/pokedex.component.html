@@ -1,57 +1,79 @@
 <header>
-    <nav class="nav">
-      <ul class="nav-list">
-        <li class="nav-item">
-          <button class="btn btn-header" (click)="filtrarPorTipo('all')">Ver todos</button>
-        </li>
-        <li class="nav-item" *ngFor="let tipo of tiposPokemon">
-          <button class="btn btn-header {{ tipo }}" (click)="filtrarPorTipo(tipo)">
-            {{ tipo | titlecase }}
-          </button>
-        </li>
-      </ul>
-    </nav>
+  <nav class="nav">
+    <ul class="nav-list">
+      <li class="nav-item">
+        <button class="btn btn-header" (click)="filtrarPorTipo('all')">Ver todos</button>
+      </li>
+      <li class="nav-item" *ngFor="let tipo of tiposPokemon">
+        <button class="btn btn-header {{ tipo }}" (click)="filtrarPorTipo(tipo)">
+          {{ tipo | titlecase }}
+        </button>
+      </li>
+    </ul>
+    <!-- Botón Crear Equipo solo si está autenticado -->
+    <div style="margin-top: 16px; text-align: center;" *ngIf="estaAutenticado()">
+      <button class="btn btn-header btn-crear-equipo" (click)="navegarACrearEquipo()">
+        Crear Equipo
+      </button>
+    </div>
+  </nav>
 </header>
-  
-  <main>
-    <div class="todos">
-      @if(loadingPokemons) {        
-        <div class="loading">
-          <img src="../../../assets/pikachucorriendo.gif" alt="Cargando..." class="loading-gif">
+
+<section *ngIf="mostrarCrearEquipo" class="crear-equipo-section">
+  <h2>Tu equipo Pokémon</h2>
+  <br>
+  <div class="equipo-grid">
+    <div class="equipo-slot" *ngFor="let slot of equipoSlots; let i = index" (click)="seleccionarSlot(i)">
+      <ng-container *ngIf="equipo[i]; else vacio">
+        <p class="pokemon-id">#{{ equipo[i]?.id }}</p>
+        <img [src]="equipo[i]?.sprites?.other?.['official-artwork']?.front_default" [alt]="equipo[i]?.name" />
+        <p>{{ equipo[i]?.name | titlecase }}</p>
+      </ng-container>
+      <ng-template #vacio>
+        <span class="plus">+</span>
+      </ng-template>
+    </div>
+  </div>
+  <button class="btn btn-header" (click)="guardarEquipo()" [disabled]="equipoLlenoCount === 0">Guardar equipo</button>
+  <div *ngIf="mensajeEquipo" class="mensaje-equipo">{{ mensajeEquipo }}</div>
+</section>
+
+<main>
+  <div class="todos">
+    @if(loadingPokemons) {
+    <div class="loading">
+      <img src="../../../assets/pikachucorriendo.gif" alt="Cargando..." class="loading-gif">
+    </div>
+    } @else if (false) {
+    <div class="error">
+      <p>Error al cargar los pokemones. Intenta de nuevo más tarde.</p>
+    </div>
+    } @else {
+    <div class="pokemon-todos">
+      <div *ngFor="let pokemon of pokemons" class="pokemon" (click)="mostrarDetalle(pokemon)">
+        <p class="pokemon-id-back">#{{ pokemon.id }}</p>
+        <div class="pokemon-imagen">
+          <img [src]="pokemon.sprites.other['official-artwork'].front_default" alt="{{ pokemon.name }}">
         </div>
-      } @else if (false) {
-        <div class="error">
-          <p>Error al cargar los pokemones. Intenta de nuevo más tarde.</p>
-        </div>
-      } @else {
-      <div class="pokemon-todos">
-        <div *ngFor="let pokemon of pokemons" class="pokemon" (click)="mostrarDetalle(pokemon)">
-          <p class="pokemon-id-back">#{{ pokemon.id }}</p>
-          <div class="pokemon-imagen">
-            <img [src]="pokemon.sprites.other['official-artwork'].front_default" alt="{{ pokemon.name }}">
+        <div class="pokemon-info">
+          <div class="nombre-contenedor">
+            <p class="pokemon-id">#{{ pokemon.id }}</p>
+            <h2 class="pokemon-nombre">{{ pokemon.name | titlecase }}</h2>
           </div>
-          <div class="pokemon-info">
-            <div class="nombre-contenedor">
-              <p class="pokemon-id">#{{ pokemon.id }}</p>
-              <h2 class="pokemon-nombre">{{ pokemon.name | titlecase }}</h2>
-            </div>
-            <div class="pokemon-tipos">
-              <p *ngFor="let tipo of pokemon.types" class="tipo {{ tipo.type.name }}">{{ tipo.type.name | titlecase }}</p>
-            </div>
-            <div class="pokemon-stats">
-              <p class="stat">{{ pokemon.height / 10 }}m</p>
-              <p class="stat">{{ pokemon.weight / 10 }}kg</p>
-            </div>
+          <div class="pokemon-tipos">
+            <p *ngFor="let tipo of pokemon.types" class="tipo {{ tipo.type.name }}">{{ tipo.type.name | titlecase }}</p>
+          </div>
+          <div class="pokemon-stats">
+            <p class="stat">{{ pokemon.height / 10 }}m</p>
+            <p class="stat">{{ pokemon.weight / 10 }}kg</p>
           </div>
         </div>
       </div>
+    </div>
     }
 
-    </div>
-  </main>
+  </div>
+</main>
 
-  <app-pokemon-detail 
-    [pokemon]="pokemonSeleccionado" 
-    [descripcion]="descripcionPokemon"
-    [categoria]="categoriaPokemon">
-  </app-pokemon-detail>
+<app-pokemon-detail [pokemon]="pokemonSeleccionado" [descripcion]="descripcionPokemon" [categoria]="categoriaPokemon">
+</app-pokemon-detail>

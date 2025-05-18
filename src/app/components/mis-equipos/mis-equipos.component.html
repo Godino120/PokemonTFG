@@ -1,0 +1,47 @@
+<div class="equipos-wrapper">
+  <div *ngIf="loading" class="loading">
+    <img src="../../../assets/pikachucorriendo.gif" alt="Cargando..." class="loading-gif">
+  </div>
+
+  <ng-container *ngIf="!loading">
+    <div *ngIf="error">{{ error }}</div>
+    <div *ngIf="!loading && equipos.length === 0" class="no-equipos-msg">
+      <span>😢</span>
+      <p>No tienes equipos guardados.</p>
+    </div>
+    <div class="equipos-lista" *ngIf="equipos.length > 0">
+      <div class="equipo-card" *ngFor="let equipo of equipos; let i = index">
+        <div class="equipo-header">
+          <h3>Equipo #{{ i + 1 }}</h3>
+          <button class="btn-borrar" (click)="borrarEquipo(equipo.id)">Borrar equipo</button>
+        </div>
+        <div class="pokemon-todos">
+          <div *ngFor="let pokemon of equiposPokemons[i]" class="pokemon" (click)="mostrarDetalle(pokemon)">
+            <p class="pokemon-id-back">#{{ pokemon.id }}</p>
+            <div class="pokemon-imagen">
+              <img [src]="pokemon.sprites.other['official-artwork'].front_default" alt="{{ pokemon.name }}">
+            </div>
+            <div class="pokemon-info">
+              <div class="nombre-contenedor">
+                <p class="pokemon-id">#{{ pokemon.id }}</p>
+                <h2 class="pokemon-nombre">{{ pokemon.name | titlecase }}</h2>
+              </div>
+              <div class="pokemon-tipos">
+                <p *ngFor="let tipo of pokemon.types" class="tipo {{ tipo.type.name }}">{{ tipo.type.name | titlecase }}</p>
+              </div>
+              <div class="pokemon-stats">
+                <p class="stat">{{ pokemon.height / 10 }}m</p>
+                <p class="stat">{{ pokemon.weight / 10 }}kg</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <app-pokemon-detail
+      [pokemon]="pokemonSeleccionado"
+      [descripcion]="descripcionPokemon"
+      [categoria]="categoriaPokemon">
+    </app-pokemon-detail>
+  </ng-container>
+</div>

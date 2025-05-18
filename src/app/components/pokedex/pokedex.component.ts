@@ -3,6 +3,9 @@ import { CommonModule } from '@angular/common';
 import { PokemonService } from '../../services/pokemon.service';
 import { PokemonDetailComponent } from '../pokemon-detail/pokemon-detail.component';
 import { firstValueFrom } from 'rxjs';
+import { AuthService } from '../../services/auth.service';
+import { Router } from '@angular/router';
+import { EquipoService } from '../../services/equipo.service';
 
 interface Pokemon {
   id: number;
@@ -81,17 +84,28 @@ export class PokedexComponent implements OnInit {
   descripcionPokemon: string = '';
   categoriaPokemon: string = '';
   loadingPokemons: boolean = true;
+  mostrarCrearEquipo = false;
+  equipo: (Pokemon | null)[] = [null, null, null, null, null, null];
+  equipoSlots = Array(6);
+  slotSeleccionado: number | null = null;
+  mensajeEquipo: string = '';
 
-  constructor(private pokemonService: PokemonService) {}
+  constructor(
+    private pokemonService: PokemonService,
+    private authService: AuthService,
+    private equipoService: EquipoService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.cargarPokemons();
+    this.loadingPokemons = true;
   }
 
   async cargarPokemons(): Promise<void> {
     try {
       
-      this.loadingPokemons = true;
+    this.loadingPokemons = true;
 
       const respuesta = await firstValueFrom(this.pokemonService.getPokemons()) as PokemonResponse;
       if (!respuesta?.results) return;
@@ -145,6 +159,13 @@ export class PokedexComponent implements OnInit {
   }
 
   async mostrarDetalle(pokemon: Pokemon) {
+    // Si estamos creando equipo y hay un slot seleccionado, añade el Pokémon a ese slot
+    if (this.mostrarCrearEquipo && this.slotSeleccionado !== null) {
+      this.equipo[this.slotSeleccionado] = pokemon;
+      this.slotSeleccionado = null; // Opcional: deselecciona el slot tras añadir
+      return;
+    }
+
     try {
       this.pokemonSeleccionado = pokemon;
       const speciesUrl = pokemon.species.url;
@@ -175,5 +196,37 @@ export class PokedexComponent implements OnInit {
     } catch (error) {
       console.error('Error al cargar detalles del Pokémon:', error);
     }
+  }
+
+  estaAutenticado(): boolean {
+    return this.authService.estaAutenticado();
+  }
+
+  navegarACrearEquipo() {
+    this.mostrarCrearEquipo = true;
+    this.mensajeEquipo = '';
+  }
+
+  seleccionarSlot(index: number) {
+    this.slotSeleccionado = index;
+  }
+
+  async guardarEquipo() {
+    const equipoParaGuardar = this.equipo.filter(Boolean).map(p => ({
+      id: p!.id,
+      name: p!.name
+    }));
+    try {
+      await firstValueFrom(this.equipoService.guardarEquipo(equipoParaGuardar));
+      this.mensajeEquipo = '¡Equipo guardado correctamente!';
+      this.mostrarCrearEquipo = false;
+      this.equipo = [null, null, null, null, null, null];
+    } catch (e) {
+      this.mensajeEquipo = 'Error al guardar el equipo. Intenta de nuevo.';
+    }
+  }
+
+  get equipoLlenoCount(): number {
+    return this.equipo.filter(Boolean).length;
   }
 }

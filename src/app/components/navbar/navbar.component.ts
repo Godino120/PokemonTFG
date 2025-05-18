@@ -1,20 +1,36 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, Signal } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-navbar',
   imports: [CommonModule],
   templateUrl: './navbar.component.html',
-  styleUrl: './navbar.component.css'
+  styleUrls: ['./navbar.component.css']
 })
-export class NavbarComponent {
-  
-  estaAutenticado: Signal<boolean> = computed(() => this.authService.estaAutenticado());
+export class NavbarComponent implements OnInit, OnDestroy {
+  autenticado: boolean = false;
+  private sub?: Subscription;
 
   constructor(private router: Router, private authService: AuthService) { 
     this.authService = authService;
+  }
+
+  ngOnInit() {
+    this.autenticado = this.authService.estaAutenticado();
+    this.sub = this.authService.autenticado$.subscribe(
+      estado => this.autenticado = estado
+    );
+  }
+
+  ngOnDestroy() {
+    this.sub?.unsubscribe();
+  }
+
+  estaAutenticado() {
+    return this.autenticado;
   }
 
   navegarALandingPage(): void {
@@ -34,10 +50,11 @@ export class NavbarComponent {
   }
 
   navegarASesion(): void {
-    if(this.authService.estaAutenticado()){
-      this.router.navigate(['/perfil']);
-    } else {
-      this.router.navigate(['/login']);
-    }
+    this.router.navigate(['/login']);
+  }
+
+  cerrarSesion(): void {
+    this.authService.cerrarSesion();
+    this.router.navigate(['/login']);
   }
 }

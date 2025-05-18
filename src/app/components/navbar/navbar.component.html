@@ -5,19 +5,29 @@
       <li class="nav-item">
         <button class="btn btn-header" (click)="navegarAPokedex()">Pokédex</button>
       </li>
+      
+      <!--
       <li class="nav-item">
         <button class="btn btn-header" [ngClass]="{ 'nav-item--disabled': !estaAutenticado() }" (click)="navegarACrearEquipo()">Crear Equipo</button>
       </li>
+      -->
+      
       <li class="nav-item">
         <button class="btn btn-header" [ngClass]="{ 'nav-item--disabled': !estaAutenticado() }" (click)="navegarAMisEquipos()">Mis Equipos</button>
       </li>
     </ul>
 
     <div class="nav-user">
-      <button class="user-icon" (click)="navegarASesion()">
-        <img src="/assets/img/icons/user.svg" alt="Usuario" />
-      </button>
+      <ng-container *ngIf="!estaAutenticado(); else logoutBtn">
+        <button class="user-icon" (click)="navegarASesion()">
+          <img src="/assets/img/icons/user.svg" alt="Usuario" />
+        </button>
+      </ng-container>
+      <ng-template #logoutBtn>
+        <button class="user-icon" (click)="cerrarSesion()" title="Cerrar sesión">
+          <img src="/assets/img/icons/log-out.svg" alt="Cerrar sesión" />
+        </button>
+      </ng-template>
     </div>
-
   </nav>
 </header>

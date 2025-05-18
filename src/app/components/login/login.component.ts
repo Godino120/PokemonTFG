@@ -27,6 +27,8 @@ export class LoginComponent {
       .subscribe({
         next: (usuario) => {
           this.authService.guardarUsuario(usuario);
+          this.authService.estaAutenticado();
+          this.router.navigate(['/landing-page']);
         },
         error: (error) => {
           console.error(error);
