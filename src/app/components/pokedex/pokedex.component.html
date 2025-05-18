@@ -15,6 +15,15 @@
   
   <main>
     <div class="todos">
+      @if(loadingPokemons) {        
+        <div class="loading">
+          <img src="../../../assets/pikachucorriendo.gif" alt="Cargando..." class="loading-gif">
+        </div>
+      } @else if (false) {
+        <div class="error">
+          <p>Error al cargar los pokemones. Intenta de nuevo más tarde.</p>
+        </div>
+      } @else {
       <div class="pokemon-todos">
         <div *ngFor="let pokemon of pokemons" class="pokemon" (click)="mostrarDetalle(pokemon)">
           <p class="pokemon-id-back">#{{ pokemon.id }}</p>
@@ -36,6 +45,8 @@
           </div>
         </div>
       </div>
+    }
+
     </div>
   </main>
 

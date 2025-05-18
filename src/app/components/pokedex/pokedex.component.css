@@ -72,10 +72,22 @@ main {
     margin: 0 auto;
 }
 
+.todos{
+    min-height: 60vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .pokemon-todos {
     display: grid;
     grid-template-columns: 1fr;
     gap: 16px;
+}
+
+.loading-gif {
+    width: 350px;
+    margin: 0 auto;
 }
 
 @media screen and (min-width: 450px) {

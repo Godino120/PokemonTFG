@@ -21,7 +21,7 @@ export class LoginComponent {
   constructor(private authService:AuthService, private http: HttpClient, private router: Router) {}
 
   onSubmit() {
-    const loginData = { email: this.email, contrasena: this.contrasena };
+    const loginData = { correo: this.email, contrasena: this.contrasena };
 
     this.http.post<Usuario>('http://localhost:8080/api/usuario/login', loginData)
       .subscribe({

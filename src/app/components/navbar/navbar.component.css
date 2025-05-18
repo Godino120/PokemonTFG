@@ -44,6 +44,28 @@ header img {
     margin: 0 auto;
 }
 
+.nav-item--disabled {
+    color: #b0b0b0;
+    cursor: default;
+    pointer-events: none;
+}
+
+.user-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 100vmax;
+    background-color: #ececec;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.user-icon img {
+    width: 80%;
+    height: 80%;
+    border-radius: 100vmax;
+}
+
 @media (min-width: 768px) {
     .nav {
         flex-direction: row;

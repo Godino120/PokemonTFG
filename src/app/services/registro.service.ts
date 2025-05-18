@@ -13,8 +13,8 @@ export class RegistroService{
 
     constructor(private router:Router, private http: HttpClient){}
 
-    crearUsuario(nombre:string,email:string, contrasena:string): Observable<Usuario>{
-        const usuarioNuevo = { nombre,  email, contrasena };
+    crearUsuario(usuario:string,correo:string, contrasena:string): Observable<Usuario>{
+        const usuarioNuevo = { usuario,  correo, contrasena };
         return this.http.post<Usuario>('http://localhost:8080/api/usuario/registro', usuarioNuevo);
     }
 }

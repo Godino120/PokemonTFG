@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PokemonService } from '../../services/pokemon.service';
 import { PokemonDetailComponent } from '../pokemon-detail/pokemon-detail.component';
-import { firstValueFrom } from 'rxjs'; // <-- IMPORTANTE
+import { firstValueFrom } from 'rxjs';
 
 interface Pokemon {
   id: number;
@@ -80,6 +80,7 @@ export class PokedexComponent implements OnInit {
   pokemonSeleccionado?: Pokemon;
   descripcionPokemon: string = '';
   categoriaPokemon: string = '';
+  loadingPokemons: boolean = true;
 
   constructor(private pokemonService: PokemonService) {}
 
@@ -89,6 +90,9 @@ export class PokedexComponent implements OnInit {
 
   async cargarPokemons(): Promise<void> {
     try {
+      
+      this.loadingPokemons = true;
+
       const respuesta = await firstValueFrom(this.pokemonService.getPokemons()) as PokemonResponse;
       if (!respuesta?.results) return;
 
@@ -98,6 +102,11 @@ export class PokedexComponent implements OnInit {
 
       const detalles = await Promise.all(detallesPromesas);
       this.pokemons = detalles.filter((pokemon): pokemon is Pokemon => pokemon !== null);
+
+      setTimeout(() => {
+        this.loadingPokemons = false;
+      }, 1000);
+      
     } catch (error) {
       console.error('Error al cargar Pokémon:', error);
     }

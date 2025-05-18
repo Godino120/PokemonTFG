@@ -1,21 +1,21 @@
 <header>
   <nav class="nav">
-    <img src="/assets/img/logo.png" alt="Logo Pokémon" (click)="navegarALandingPage()"/>
+    <img src="/assets/img/logo.png" alt="Logo Pokémon" (click)="navegarALandingPage()" />
     <ul class="nav-list">
       <li class="nav-item">
         <button class="btn btn-header" (click)="navegarAPokedex()">Pokédex</button>
       </li>
       <li class="nav-item">
-        <button class="btn btn-header" (click)="navegarACrearEquipo()">Crear Equipo</button>
+        <button class="btn btn-header" [ngClass]="{ 'nav-item--disabled': !estaAutenticado() }" (click)="navegarACrearEquipo()">Crear Equipo</button>
       </li>
       <li class="nav-item">
-        <button class="btn btn-header" (click)="navegarAMisEquipos()">Mis Equipos</button>
+        <button class="btn btn-header" [ngClass]="{ 'nav-item--disabled': !estaAutenticado() }" (click)="navegarAMisEquipos()">Mis Equipos</button>
       </li>
     </ul>
 
     <div class="nav-user">
-      <button class="user-icon">
-        <img src="/assets/img/icons/user.png" alt="Usuario" (click)="navegarASesion()"/>
+      <button class="user-icon" (click)="navegarASesion()">
+        <img src="/assets/img/icons/user.svg" alt="Usuario" />
       </button>
     </div>
 
