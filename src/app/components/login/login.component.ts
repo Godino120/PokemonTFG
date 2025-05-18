@@ -26,13 +26,17 @@ export class LoginComponent {
     this.http.post<Usuario>('http://localhost:8080/api/usuario/login', loginData)
       .subscribe({
         next: (usuario) => {
-          this.authService.guardarUsuario(usuario);
-          this.authService.estaAutenticado();
-          this.router.navigate(['/landing-page']);
+          if (usuario) {
+            this.authService.guardarUsuario(usuario);
+            this.authService.estaAutenticado();
+            this.router.navigate(['/landing-page']);
+          } else {
+            this.errorMessage = 'Credenciales incorrectas';
+          }
         },
         error: (error) => {
           console.error(error);
-          this.errorMessage = 'Credenciales incorrectas';
+          this.errorMessage = 'Error al conectar con el servidor.';
         }
       });
   }
