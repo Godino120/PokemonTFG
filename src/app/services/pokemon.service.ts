@@ -10,7 +10,6 @@ export class PokemonService {
 
   constructor(private http: HttpClient) {}
 
-  // Obtener todos los Pokémon
   getPokemons(): Observable<any> {
     return this.http.get<any>(this.apiUrl).pipe(
       catchError(err => {
@@ -40,16 +39,6 @@ export class PokemonService {
     );
   }
 
-  // Filtrar Pokémon por tipo (original)
-  getPokemonByType(type: string): Observable<any> {
-    return this.http.get<any>(`https://pokeapi.co/api/v2/type/${type}`).pipe(
-      catchError(err => {
-        console.error(`Error al obtener Pokémon de tipo ${type}:`, err);
-        return throwError(() => new Error(`Error al obtener Pokémon de tipo ${type}`));
-      })
-    );
-  }
-
   // Nueva función: Filtrar Pokémon por tipo y limitar a los primeros 151
   getPokemonByTypeLimited(type: string): Observable<any> {
     return this.http.get<any>(`https://pokeapi.co/api/v2/type/${type}`).pipe(
@@ -58,7 +47,7 @@ export class PokemonService {
           .map((p: any) => p.pokemon)
           .filter((pokemon: any) => {
             const id = this.getIdFromUrl(pokemon.url);
-            return id <= 151; // Filtrar solo los Pokémon con ID ≤ 151
+            return id <= 151;
           });
         return { pokemon: filteredPokemons };
       }),

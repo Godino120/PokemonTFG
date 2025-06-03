@@ -159,10 +159,9 @@ export class PokedexComponent implements OnInit {
   }
 
   async mostrarDetalle(pokemon: Pokemon) {
-    // Si estamos creando equipo y hay un slot seleccionado, añade el Pokémon a ese slot
     if (this.mostrarCrearEquipo && this.slotSeleccionado !== null) {
       this.equipo[this.slotSeleccionado] = pokemon;
-      this.slotSeleccionado = null; // Opcional: deselecciona el slot tras añadir
+      this.slotSeleccionado = null;
       return;
     }
 

@@ -313,8 +313,8 @@ main {
 }
 
 .equipo-slot {
-  width: 120px;         /* antes 90px */
-  height: 120px;        /* antes 90px */
+  width: 150px;         /* antes 90px */
+  height: 150px;        /* antes 90px */
   border: 2px solid #222;
   border-radius: 16px;
   display: flex;

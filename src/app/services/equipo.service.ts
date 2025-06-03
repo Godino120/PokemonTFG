@@ -14,8 +14,8 @@ export class EquipoService {
   guardarEquipo(equipo: any[]): Observable<any> {
     const usuarioId = this.authService.obtenerUsuarioId();
     const body = {
-      idUsuario: usuarioId, // o { id: usuarioId } si tu backend espera un objeto
-      pokemones: equipo.map(p => p.id) // <-- solo IDs
+      idUsuario: usuarioId,
+      pokemones: equipo.map(p => p.id)
     };
     return this.http.post(this.apiUrl + '/guardar', body);
   }
